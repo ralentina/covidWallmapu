@@ -1,0 +1,26 @@
+:root {
+  --serif: 'Alegreya', Georgia, Times New Roman, serif;
+  --sans-serif: 'Alegreya Sans', Arial, Helvetica, sans-serif;
+  --standard-text: #232323;
+  --accent: #27AAE1;
+}
+
+.banner-container {
+	display: table;
+	height: 50px; 
+	overflow: hidden; 
+	margin: auto;
+}
+
+.banner {
+	display: table-cell;
+	vertical-align: middle;
+	padding: 10px;
+}
+
+.banner a {
+	font-family: var(--sans-serif);
+	color: var(--standard-text);
+	font-size: 14pt;
+	font-weight: 800;
+}

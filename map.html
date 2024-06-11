@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Mapeando el Covid en Wallmapu</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta charset="utf-8">
+	
+	<!-- CSS links -->
+	<link rel="stylesheet" href="css/leaflet.css">
+    <link rel="stylesheet" href="css/qgis2web.css">
+	<link rel="stylesheet" href="css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="css/MarkerCluster.css">
+    <link rel="stylesheet" href="css/MarkerCluster.Default.css">
+	<link rel="stylesheet" href="css/leaflet-sidebar.css" />
+	<link rel="stylesheet" href="css/sidebar-custom.css" />
+	
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Alegreya:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+	
+    <!--[if lte IE 8]><link rel="stylesheet" href="https://cdn.leafletjs.com/leaflet-0.7.2/leaflet.ie.css" /><![endif]-->
+
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        html, body, #map {
+            height: 100%;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+    <div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <div class="sidebar-tabs">
+            <ul role="tablist">
+				<li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+				<li><a href="#info" role="tab"><i class="fa fa-info"></i></a></li>
+                <li><a href="#profile" role="tab"><i class="fa fa-user-friends"></i></a></li>
+				
+            </ul>
+        </div>
+
+        <!-- Tab panes -->
+        <div class="sidebar-content">
+            <div class="sidebar-pane" id="home">
+                <h1 class="sidebar-header">
+                    Clave
+                    <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+				<p class="lorem">Ultima actualización: 18 agosto 2020</p>
+				<table id="map-key">
+					<tr>
+						<td><img class="key-symbol" src="markers/2-control_territorial.svg" /></td>
+						<td>Control territorial</td>
+					</tr>
+					<tr>
+						<td><img class="key-symbol" src="markers/1-religion.svg" /></td>
+						<td>Defensa Espiritual </td>
+					</tr>
+					<tr>
+						<td><img class="key-symbol" src="markers/5-sobrania_alimentaria.svg" /></td>
+						<td>Soberanía alimentaria</td>
+					</tr>
+					<tr>
+						<td><img class="key-symbol" src="markers/3-sanitarias.svg" /></td>
+						<td>Patrimonio sanitario ancestral</td>
+					</tr>
+					<tr>
+						<td><img class="key-symbol" src="markers/4-violencias_estadal.svg" /></td>
+						<td>Violencia política</td>	
+					</tr>
+					<tr>
+						<td><img class="key-symbol" src="markers/6-necesidades.svg" /></td>
+						<td>Necesidades y Solidaridad territorial (Trafkintu)</td>
+					</tr>
+					<tr>
+						<td><img class="key-symbol" src="markers/7-extractivismo.svg" /></td>
+						<td>Avance extractivista</td>
+					</tr>
+				</table>
+				
+                <p class="sidebar-info"><span class="emphasis">Control territorial</span>: Acciones y declaraciones de comunidades Mapuche en Wallmapu que refuerzan o debilitan el Control Territorial político, económico, sanitario o cultural. Incluye: descripción de cierre de zonas, barreras sanitarias, control de movilidad, declaraciones públicas acerca de control territorial.
+				<p class="sidebar-info"><span class="emphasis">Defensa espiritual</span>: Actos o declaraciones de comunidades Mapuche respecto a la práctica de la espiritualidad Mapuche, o que se vinculen con acciones que ayudan a enfrentar, entender y vivir esta Pandemia (ceremonias, saludos, reflexiones). Incluye: impactos positivos o negativos sobre valores y prácticas espirituales de las comunidades, familias y personas.</p>
+				<p class="sidebar-info"><span class="emphasis">Soberanía alimentaria</span>: Hechos positivos o negativos que han influenciado en el acceso a alimentos (comercialización, distribución, intercambio), su producción (acceso a semillas, siembras comunitarias); así como actos que hayan impactado el derecho al conocimiento, autonomía y decisión comunitaria acerca de los sistemas alimentarios de las comunidades, familias u organizaciones (reuniones, acciones políticas, seminarios académicos...).</p>
+				<p class="sidebar-info"><span class="emphasis">Patrimonio sanitario ancestral</span>: Hechos en que comunidades Mapuche, la red de salud fiscal, organizaciones, familias o personas han usado, defendido, compartido o difundido las prácticas y conocimiento de medicina tradicional Mapuche.</p>
+				<p class="sidebar-info"><span class="emphasis">Violencia política</span>: Situaciones de violencia física, sicológica o social que han ocurrido en los territorios de Wallmapu y donde estén involucrados funcionarios estatales (carabineros, PDI, FF.AA., políticos y empleados fiscales). También este tipo de hechos en que estén involucradas comunidades mapuche y/o agrupaciones chilenas. Especial mención a los grupos paramilitares y a todo el sistema del “Comando Jungla” que aún se intenta implementar en Wallmapu..</p>
+				<p class="sidebar-info"><span class="emphasis">Necesidades y Solidarida territorial (Trafkintu)</span>: Comunidades Mapuche y aliadxs pueden anotar sus necesidades o ofrecimientos para obtener, intercambiar o comercializar productos, servicios o conocimientos (medicina, espiritualidad, educación). Llamado a la ciudadanía para prestar atención a algún hecho específico (allanamiento, persecusión política o policial o solicitud de apoyo por avance de proyectos extractivistas).</p>
+				<p class="sidebar-info"><span class="emphasis">Avance Extractivista</span>: Preocupaciones sobre el avance física y el movimiento de gente de afuera respecto al desarrollo extractivista. Incluye lo siguiente: a) Proyectos iniciando o operando en territorio Mapuche sin consulta Indígena, sin reconocer a autoridades ancestrales y/o manipulando la ley ambiental e indígena para proyectos extractivistas en minería, forestal, energía, pesca, inmobiliarias, acuicultura, etc.</p>
+
+            </div>
+			
+			<div class="sidebar-pane" id="info">
+                <h1 class="sidebar-header">Informaciones sobre el Proyecto<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+					<p class="sidebar-info">
+					“Mapeando Coronavirus en el Wallmapu” es un proyecto colaborativo, cuyo objetivo es registrar y monitorear los efectos de la pandemia del COVID-19 en la vida de las familias, comunidades y ecosistemas naturales en los territorios Mapuche.</br></br>
+					Este trabajo colaborativo guiado por <a href="https://www.mapuexpress.org/" target="_blank">Mapuexpress</a> y apoyado por <a href="http://www.cigiden.cl" target="_blank">CIGIDEN</a> ha levantado seis conceptos territoriales respecto a cómo las comunidades están reaccionando frente a la pandemia. Los conceptos incluyen: Control Territorial, Patrimonio Sanitario, Defensa Espiritual, Violencia Política, Avance Extractivista y Solidaridad Territorial.</br></br>
+					Te invitamos a colaborar con datos para así potenciar este trabajo. Súmate a conformar esta base de datos de trabajo colaborativo para saber cómo el Wallmapu enfrenta al Coronavirus. Te invitamos a llenar <a href="https://canvis.app/covid-in-wallmapu" target="_blank">este formulario</a> confidencial.
+					</p>
+            </div>
+
+            <div class="sidebar-pane" id="profile">
+                <h1 class="sidebar-header">Equipo<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+				<p class="sidebar-info sidebar-subheader">Mapuexpress</p>
+				<ul class="sidebar-info sidebar-list">
+				<li>Patricio Melillanca</li>
+				<li>José Luis Vargas</li>
+				</ul>
+				<p class="sidebar-info sidebar-subheader">Cigiden</p>
+				<ul class="sidebar-info sidebar-list">
+				<li>Sarah Kelly</li>
+				<li>Valentina Carraro</li>
+				<li>José Miguel Valdés</li>
+				</ul>
+				<p class="sidebar-info sidebar-subheader">Diseño Gráfico</p>
+				<ul class="sidebar-info sidebar-list">
+				<li>Sergio Iacobelli</li>
+				</ul>
+				</p>
+				<div id="logo-table">
+				<img class="logo" src="logos/logo-mapuexpress-1.png" /></td>
+				<img class="logo" src="logos/CIGIDEN_vert.png" /></td>
+				</div>
+            </div>
+        </div>
+    </div>
+	
+<!-- MAP -->
+    <div id="map" class="sidebar-map"></div>
+	
+<!-- SCRIPTS -->
+	<!-- Sidebar -->
+    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+    <script src="js/leaflet-sidebar.js"></script>
+	
+	<!-- QGIS, to clean -->
+	<script src="js/qgis2web_expressions.js"></script>
+    <script src="js/leaflet.rotatedMarker.js"></script>
+    <script src="js/leaflet.pattern.js"></script>
+    <script src="js/leaflet-hash.js"></script>
+    <script src="js/Autolinker.min.js"></script>
+    <script src="js/rbush.min.js"></script>
+    <script src="js/labelgun.min.js"></script>
+    <script src="js/labels.js"></script>
+    <script src="js/leaflet.markercluster.js"></script>
+    <script src="data/Eventos_1.js"></script>
+
+
+           <script>
+		   
+		<!-- centre map -->
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:6
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+		
+		<!-- add base-layer -->
+        map.createPane('pane_OSMBW_0');
+        map.getPane('pane_OSMBW_0').style.zIndex = 400;
+        var layer_OSMBW_0 = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OSMBW_0',
+            opacity: 1.0,
+            attribution: 'Base layer &copy; OpenStreetMap contributors - Data &copy Mapuexpress &amp Cigiden',
+            minZoom: 6,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 18
+        });
+        layer_OSMBW_0;
+        map.addLayer(layer_OSMBW_0);
+		
+		<!-- add point-layer -->
+        function pop_Eventos_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DESCRIPCIÓN'] !== null ? autolinker.link(feature.properties['DESCRIPCIÓN'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Fuente</th>\
+                        <td>' + (feature.properties['FUENTE'] !== null ? autolinker.link(feature.properties['FUENTE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Fecha</th>\
+                        <td>' + (feature.properties['FECHA'] !== null ? autolinker.link(feature.properties['FECHA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Categoría(s)</th>\
+                        <td>' + (feature.properties['CATEGORIAS'] !== null ? autolinker.link(feature.properties['CATEGORIAS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Eventos_1_0(feature) {
+            switch(String(feature.properties['q2wHide_CAT1'])) {
+                case 'Avance Extractivista':
+                    return {
+                pane: 'pane_Eventos_1',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/7-extractivismo.svg',
+            iconSize: [26.599999999999998, 26.599999999999998]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Control territorial':
+                    return {
+                pane: 'pane_Eventos_1',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/2-control_territorial.svg',
+            iconSize: [26.599999999999998, 26.599999999999998]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Defensa espiritual':
+                    return {
+                pane: 'pane_Eventos_1',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/1-religion.svg',
+            iconSize: [26.599999999999998, 26.599999999999998]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Necesidades y Solidaridad territorial (Trafkintu)':
+                    return {
+                pane: 'pane_Eventos_1',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/6-necesidades.svg',
+            iconSize: [26.599999999999998, 26.599999999999998]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Patrimonio sanitario ancestral':
+                    return {
+                pane: 'pane_Eventos_1',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/3-sanitarias.svg',
+            iconSize: [26.599999999999998, 26.599999999999998]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Soberanía alimentaria':
+                    return {
+                pane: 'pane_Eventos_1',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/5-sobrania_alimentaria.svg',
+            iconSize: [26.599999999999998, 26.599999999999998]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Violencia política':
+                    return {
+                pane: 'pane_Eventos_1',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/4-violencias_estadal.svg',
+            iconSize: [26.599999999999998, 26.599999999999998]
+        }),
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Eventos_1');
+        map.getPane('pane_Eventos_1').style.zIndex = 401;
+        map.getPane('pane_Eventos_1').style['mix-blend-mode'] = 'normal';
+        var layer_Eventos_1 = new L.geoJson(json_Eventos_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Eventos_1',
+            layerName: 'layer_Eventos_1',
+            pane: 'pane_Eventos_1',
+            onEachFeature: pop_Eventos_1,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.marker(latlng, style_Eventos_1_0(feature));
+            },
+        });
+        var cluster_Eventos_1 = new L.MarkerClusterGroup({showCoverageOnHover: false,
+            spiderfyDistanceMultiplier: 2});
+        cluster_Eventos_1.addLayer(layer_Eventos_1);
+
+        bounds_group.addLayer(layer_Eventos_1);
+        cluster_Eventos_1.addTo(map);
+
+        var baseMaps = {};
+        
+        setBounds();
+		
+		<!-- add sidebar -->
+		var sidebar = L.control.sidebar('sidebar').addTo(map);
+        
+
+		
+		</script>
+</body>
+</html>

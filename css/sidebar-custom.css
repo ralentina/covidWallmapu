@@ -1,0 +1,67 @@
+
+:root {
+  --serif: 'Alegreya', Georgia, Times New Roman, serif;
+  --sans-serif: 'Alegreya Sans', Arial, Helvetica, sans-serif;
+  --standard-text: #232323;
+  --accent: #27AAE1;
+}
+
+#map-key {
+	 margin-top: 2em;
+	 margin-bottom:2em;
+	 border-collapse: separate;
+     border-spacing: 1.2em;
+	 font-size: 1.2em;
+	 font-family: var(--serif);
+	 font-weight: 800;
+	 color: var(--standard-text)
+}
+
+.key-symbol {
+	max-width: 60%;
+}
+
+#logo-table {
+	position:absolute; bottom:0;
+}
+
+.logo {
+	width:20%;
+	height:20%;
+}
+
+.sidebar-info {
+	margin-right:1em;
+	font-family: var(--serif);
+	line-height: 150%;
+	font-size: 1.2em;
+}
+
+.sidebar-info a {
+	color: var(--accent)
+}
+
+.sidebar-list {
+	list-style-type:none;
+	padding-left:0;
+	margin:0;
+}
+
+.sidebar-subheader {
+	margin-bottom:0;
+	font-weight:800;
+	font-style: italic;
+}
+
+
+.emphasis {
+	font-weight: 800;
+}
+
+.lorem {
+    font-family: var(--sans-serif);
+	font-size: 16px;
+	font-style: italic;
+    color: #AAA;
+}
+
